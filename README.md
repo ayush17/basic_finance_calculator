@@ -1,4 +1,4 @@
-# Basic Auto Finance Quote – Hiring Project
+# Basic Auto Finance Quote
 
 Your task is to build a small application that calculates and manages auto loan quotes.  
 
