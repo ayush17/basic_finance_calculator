@@ -1,48 +1,75 @@
-# Basic Auto Finance Quote
+# 📊 Finance Calculator
 
-Your task is to build a small application that calculates and manages auto loan quotes.  
+A full-stack Finance Calculator app built with **React + Tailwind (frontend)** and **Express + TypeScript + MongoDB (backend)**.
 
-This project is intentionally open-ended. We want to see the technical and architectural choices you make rather than following a step-by-step guide.
+- 💻 **Frontend** → lets users enter finance details (cost, profit, selling price, term, rate, tax rate, out of pocket).
+- 📐 **Formulas** → calculates taxes, base loan, interest, monthly payments, etc.
+- 💾 **Backend** → stores saved quotes in MongoDB.
+- 📋 **Features**
+  - Live form with “Apply” button to calculate results
+  - Result panel showing loan details
+  - Save quotes to database
+  - View or delete saved quotes
 
-## Design Reference
+---
 
-We’ve provided this design as a general reference for layout and functionality.  
-You don’t need to match it pixel-for-pixel — use it as guidance for the structure and flow of the app.
+## 🚀 Tech Stack
 
+- **Frontend**: React, TypeScript, Tailwind CSS, Axios
+- **Backend**: Node.js, Express, TypeScript, Mongoose
+- **Database**: MongoDB (local instance)
 
-<img width="1140" height="895" alt="Basic-Finance-Quote-Project" src="https://github.com/user-attachments/assets/0e2587dc-ed83-4d2a-b5b7-bec9ccd463db" />
+---
 
-## Requirements
+## 📂 Project Structure
 
-- **Frontend**: Use Vue with TypeScript  
-- **Backend**: Use TypeScript (framework and storage are your choice)  
-- **Functionality**:
-  - A form for entering finance quote inputs (cost, profit, selling price, term, rate, tax rate, out-of-pocket, etc.)  
-  - Selling price, cost, and profit should stay consistent (changing one affects the others).  
-  - A way to calculate the quote and display the results (monthly payment, taxes, loan amount, etc.).  
-  - Ability to save quotes and delete quotes, persisted to a backend.  
-  - A list of saved quotes with basic details and actions to view or delete them.  
+basic_finance_calculator/
+┣ frontend/ # React + Tailwind
+┃ ┣ src/
+┃ ┃ ┣ components/
+┃ ┃ ┃ ┣ FinanceQuote.tsx
+┃ ┃ ┃ ┣ FinanceResult.tsx
+┃ ┃ ┃ ┗ SavedQuotes.tsx
+┃ ┃ ┗ App.tsx
+┣ backend/ # Express + Mongo + TS
+┃ ┣ src/
+┃ ┃ ┣ models/
+┃ ┃ ┃ ┗ Quote.ts
+┃ ┃ ┣ routes/
+┃ ┃ ┃ ┗ quoteRoutes.ts
+┃ ┃ ┗ server.ts
+┃ ┣ tsconfig.json
+┃ ┗ package.json
+┗ README.md
 
-## What We’re Looking For
+---
 
-- Correct implementation of finance calculations  
-- Clean TypeScript code across frontend and backend  
-- Sensible choices in data modeling, validation, and state management  
-- Usable and reasonably styled UI  
-- Clear instructions for running the project locally  
+## ⚙️ Setup Instructions
 
-## Expectations
+### 1️⃣ Clone Repo
 
-- Keep it simple, but make it functional.  
-- Show us how you structure and organize code.  
-- Document any trade-offs or shortcuts you take.  
-- Tests are welcome, but not required.  
+```bash
+git clone https://github.com/<your-username>/basic_finance_calculator.git
+cd basic_finance_calculator
+```
 
-## Submission
+cd backend
+npm install
 
-1. Fork this repo.  
-2. Build your project in your fork.  
-3. Update this README with any notes you want us to know.  
-4. Share your fork when finished.  
+---
 
-This project should take a few hours, not days. Focus on demonstrating your skills, not building a production-ready system.  
+### 2️⃣ Backend Setup
+
+```bash
+cd backend
+npm install
+```
+
+Create `.env` in `backend/`:
+
+Start backend:
+
+```bash
+npm run dev
+
+```
