@@ -8,24 +8,36 @@
 
 ## 📂 Project Structure
 
+```bash
 basic_finance_calculator/
-┣ frontend/
-┃ ┣ src/
-┃ ┃ ┣ components/
-┃ ┃ ┃ ┣ FinanceQuote.tsx
-┃ ┃ ┃ ┣ FinanceResult.tsx
-┃ ┃ ┃ ┗ SavedQuotes.tsx
-┃ ┃ ┗ App.tsx
-┣ backend/
-┃ ┣ src/
-┃ ┃ ┣ models/
-┃ ┃ ┃ ┗ Quote.ts
-┃ ┃ ┣ routes/
-┃ ┃ ┃ ┗ quoteRoutes.ts
-┃ ┃ ┗ server.ts
-┃ ┣ tsconfig.json
-┃ ┗ package.json
-┗ README.md
+├── frontend/
+│ ├── src/
+│ │ ├── components/
+│ │ │ ├── FinanceQuote.tsx
+│ │ │ ├── FinanceResult.tsx
+│ │ │ ├── SavedQuotes.tsx
+│ │ ├── App.tsx
+│ │ ├── index.tsx
+│ │ ├── index.css
+│ │ ├── react-app-env.d.ts
+│ │ └── ...
+│ ├── tailwind.config.js
+│ ├── tsconfig.json
+│ └── package.json
+│
+├── backend/
+│ ├── src/
+│ │ ├── models/
+│ │ │ └── Quote.ts
+│ │ ├── routes/
+│ │ │ └── quoteRoutes.ts
+│ │ ├── server.ts
+│ │ └── ...
+│ ├── tsconfig.json
+│ └── package.json
+│
+└── README.md
+```
 
 ---
 
