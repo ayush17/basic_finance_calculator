@@ -1,18 +1,3 @@
-# 📊 Finance Calculator
-
-A full-stack Finance Calculator app built with **React + Tailwind (frontend)** and **Express + TypeScript + MongoDB (backend)**.
-
-- 💻 **Frontend** → lets users enter finance details (cost, profit, selling price, term, rate, tax rate, out of pocket).
-- 📐 **Formulas** → calculates taxes, base loan, interest, monthly payments, etc.
-- 💾 **Backend** → stores saved quotes in MongoDB.
-- 📋 **Features**
-  - Live form with “Apply” button to calculate results
-  - Result panel showing loan details
-  - Save quotes to database
-  - View or delete saved quotes
-
----
-
 ## 🚀 Tech Stack
 
 - **Frontend**: React, TypeScript, Tailwind CSS, Axios
@@ -24,14 +9,14 @@ A full-stack Finance Calculator app built with **React + Tailwind (frontend)** a
 ## 📂 Project Structure
 
 basic_finance_calculator/
-┣ frontend/ # React + Tailwind
+┣ frontend/
 ┃ ┣ src/
 ┃ ┃ ┣ components/
 ┃ ┃ ┃ ┣ FinanceQuote.tsx
 ┃ ┃ ┃ ┣ FinanceResult.tsx
 ┃ ┃ ┃ ┗ SavedQuotes.tsx
 ┃ ┃ ┗ App.tsx
-┣ backend/ # Express + Mongo + TS
+┣ backend/
 ┃ ┣ src/
 ┃ ┃ ┣ models/
 ┃ ┃ ┃ ┗ Quote.ts
