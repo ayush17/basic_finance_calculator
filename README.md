@@ -63,6 +63,7 @@ npm install
 ```
 
 Create `.env` in `backend/`:
+I will provide the mongo credentials
 
 Start backend:
 
