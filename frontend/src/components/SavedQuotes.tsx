@@ -1,7 +1,7 @@
 import React from "react";
 
 interface Quote {
-  id: number;
+  _id: string;
   name: string;
   payment: number;
   outOfPocket: number;
@@ -9,8 +9,8 @@ interface Quote {
 
 interface SavedQuotesProps {
   quotes: Quote[];
-  onDelete: (id: number) => void;
-  onView: (id: number) => void;
+  onDelete: (id: string) => void; // ✅ string
+  onView: (id: string) => void; // ✅ string
 }
 
 const SavedQuotes: React.FC<SavedQuotesProps> = ({
@@ -18,6 +18,7 @@ const SavedQuotes: React.FC<SavedQuotesProps> = ({
   onDelete,
   onView,
 }) => {
+  console.log("These are quotes", quotes);
   return (
     <div className="w-full bg-white border rounded-md shadow-sm mt-8">
       <div className="px-4 py-2 bg-gray-50 border-b rounded-t-md">
@@ -29,7 +30,7 @@ const SavedQuotes: React.FC<SavedQuotesProps> = ({
           <div className="p-4 text-sm text-gray-500">No saved quotes yet</div>
         ) : (
           quotes.map((q) => (
-            <div key={q.id} className="flex items-center justify-between p-4">
+            <div key={q._id} className="flex items-center justify-between p-4">
               <div>
                 <h3 className="font-semibold text-gray-800">{q.name}</h3>
                 <p className="text-sm text-gray-600">
@@ -42,13 +43,13 @@ const SavedQuotes: React.FC<SavedQuotesProps> = ({
 
               <div className="flex gap-2">
                 <button
-                  onClick={() => onView(q.id)}
+                  onClick={() => onView(q._id)}
                   className="bg-black text-white px-4 py-1.5 rounded-md text-sm hover:bg-gray-800"
                 >
                   View
                 </button>
                 <button
-                  onClick={() => onDelete(q.id)}
+                  onClick={() => onDelete(q._id)}
                   className="bg-red-600 text-white px-4 py-1.5 rounded-md text-sm hover:bg-red-700"
                 >
                   Delete

@@ -1,30 +1,39 @@
-console.log("🚀 Starting server.ts...");
-
+// src/server.ts
 import express, { Application } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import quoteRoutes from "./routes/quoteRoutes";
-import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "./config/swagger";
+
 dotenv.config();
 
 const app: Application = express();
-console.log("✅ Express app created");
+
+// ✅ CORS middleware (must come before routes)
+app.use(
+  cors({
+    origin: "http://localhost:3000", // allow React dev server
+    credentials: true,
+    methods: ["GET", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// ✅ Handle preflight requests explicitly
+app.options("*", cors());
 
 // Middleware
-app.use(cors());
 app.use(express.json());
-console.log("✅ Middleware applied");
 
+// Routes
 app.use("/api/quotes", quoteRoutes);
-console.log("✅ Quote routes mounted");
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-// DB connection
+
+// ✅ MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI as string)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB error:", err));
 
-const PORT = process.env.PORT || 5050;
+// ✅ Server Listener
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

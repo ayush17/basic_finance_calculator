@@ -1,33 +1,27 @@
 import axios from "axios";
-import type { Quote } from "../types/Quote";
 
-const api = axios.create({
-  baseURL: "http://localhost:4000", // backend URL
+const API = axios.create({
+  baseURL: "http://localhost:5050/api/quotes", // ✅ backend on 5050
 });
 
-// Fetch all quotes
-export const getQuotes = async (): Promise<Quote[]> => {
-  const res = await api.get("/quotes");
+// Fetch all saved quotes
+export const getQuotes = async () => {
+  const res = await API.get("/");
   return res.data;
 };
 
-// Create a new quote
-export const createQuote = async (
-  data: Omit<
-    Quote,
-    | "id"
-    | "taxes"
-    | "baseLoanAmount"
-    | "interest"
-    | "totalLoanAmount"
-    | "monthlyPayment"
-  >
-): Promise<Quote> => {
-  const res = await api.post("/quotes", data);
+// Save new quote
+export const saveQuote = async (quote: {
+  name: string;
+  payment: number;
+  outOfPocket: number;
+}) => {
+  const res = await API.post("/", quote);
   return res.data;
 };
 
-// Delete a quote
-export const deleteQuote = async (id: string): Promise<void> => {
-  await api.delete(`/quotes/${id}`);
+// Delete quote
+export const deleteQuote = async (id: string) => {
+  const res = await API.delete(`/${id}`);
+  return res.data;
 };

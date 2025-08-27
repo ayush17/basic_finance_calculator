@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { getQuotes, saveQuote, deleteQuote } from "../api/quotes";
+
 import FinanceQuote from "./FinanceQuote";
 import FinanceResult from "./FinanceResult";
 import SavedQuotes from "./SavedQuotes";
@@ -24,9 +26,11 @@ const QuoteForm: React.FC = () => {
     outOfPocket: 2000,
     quoteName: "2025 Ford Escape",
   });
-  const [savedQuotes, setSavedQuotes] = useState<
-    { id: number; name: string; payment: number; outOfPocket: number }[]
-  >([]);
+  const [savedQuotes, setSavedQuotes] = useState<any[]>([]);
+
+  useEffect(() => {
+    getQuotes().then(setSavedQuotes);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,20 +67,23 @@ const QuoteForm: React.FC = () => {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (!result) return;
     const newQuote = {
-      id: nextId++,
-      name: result.quoteName,
+      name: result.quoteName || "Unnamed Quote",
       payment: result.monthlyPayment,
       outOfPocket: result.outOfPocket,
     };
-    setSavedQuotes((prev) => [...prev, newQuote]);
+    const saved = await saveQuote(newQuote); // ✅ POST /api/quotes
+    setSavedQuotes((prev) => [...prev, saved]); // update UI
   };
-  const handleDelete = (id: number) => {
-    setSavedQuotes((prev) => prev.filter((q) => q.id !== id));
+  const handleDelete = async (id: string) => {
+    console.log("this is the id", id);
+    await deleteQuote(id); // call backend
+    setSavedQuotes((prev) => prev.filter((q) => q._id !== id)); // update UI
   };
 
-  const handleView = (id: number) => {
+  const handleView = (id: string) => {
     alert("Viewing quote: " + id);
     // later: load quote back into form
   };
