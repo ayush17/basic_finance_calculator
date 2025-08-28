@@ -1,19 +1,16 @@
 import React from "react";
 
 interface FinanceResultProps {
-  result: {
-    taxes: number;
-    baseLoanAmount: number;
-    interest: number;
-    totalLoanAmount: number;
-    monthlyPayment: number;
-    outOfPocket: number;
-    quoteName: string;
-  };
+  result: any;
   onSave: () => void;
+  handleQuoteNameChange: (name: string) => void; // ✅ add this
 }
 
-const FinanceResult: React.FC<FinanceResultProps> = ({ result, onSave }) => {
+const FinanceResult: React.FC<FinanceResultProps> = ({
+  result,
+  onSave,
+  handleQuoteNameChange,
+}) => {
   return (
     <div className="max-w-lg bg-white border rounded-md shadow-sm">
       <div className="px-4 py-2 bg-gray-50 border-b rounded-t-md">
@@ -51,22 +48,24 @@ const FinanceResult: React.FC<FinanceResultProps> = ({ result, onSave }) => {
           <span>${result.outOfPocket.toFixed(2)}</span>
         </div>
 
-        <div className="flex items-center justify-between">
-          <label className="text-gray-700">Quote Name:</label>
+        <div className="flex justify-between items-center">
+          <span>Quote Name:</span>
           <input
             type="text"
             value={result.quoteName}
-            readOnly
+            onChange={(e) => handleQuoteNameChange(e.target.value)} // ✅ use handler
             className="border rounded-md px-2 py-1 text-sm"
           />
         </div>
 
-        <button
-          onClick={onSave}
-          className="mt-3 flex items-center justify-center gap-1 bg-black text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800"
-        >
-          <span>💾</span> Save
-        </button>
+        <div className="flex justify-end">
+          <button
+            onClick={onSave}
+            className="bg-black text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-gray-800"
+          >
+            💾 Save
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -44,10 +44,10 @@ router.get("/", async (_req: Request, res: Response) => {
 });
 
 // POST new quote
+// src/routes/quoteRoutes.ts
 router.post("/", async (req: Request, res: Response) => {
   try {
-    const { name, payment, outOfPocket } = req.body;
-    const newQuote = new Quote({ name, payment, outOfPocket });
+    const newQuote = new Quote(req.body);
     const savedQuote = await newQuote.save();
     res.status(201).json(savedQuote);
   } catch (err) {

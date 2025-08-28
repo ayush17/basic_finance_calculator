@@ -67,12 +67,14 @@ const FinanceQuote: React.FC<FinanceQuoteProps> = ({
           </div>
         ))}
 
-        <button
-          type="submit"
-          className="w-full mt-2 bg-black text-white py-2 rounded-md text-sm font-medium hover:bg-gray-800"
-        >
-          ✔ Apply
-        </button>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-black text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-gray-800"
+          >
+            ✔ Apply
+          </button>
+        </div>
       </form>
     </div>
   );

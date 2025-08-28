@@ -6,25 +6,35 @@ import FinanceResult from "./FinanceResult";
 import SavedQuotes from "./SavedQuotes";
 
 let nextId = 1;
+
+interface FormState {
+  cost: string;
+  profit: string;
+  sellingPrice: string;
+  term: string;
+  rate: string;
+  outOfPocket: string;
+  taxRate: string;
+}
 const QuoteForm: React.FC = () => {
-  const [form, setForm] = useState({
-    cost: 26906,
-    profit: 1500,
-    sellingPrice: 28406,
-    term: 36,
-    rate: 5.7,
-    outOfPocket: 2000,
-    taxRate: 7.5,
+  const [form, setForm] = useState<FormState>({
+    cost: "",
+    profit: "",
+    sellingPrice: "",
+    term: "",
+    rate: "",
+    outOfPocket: "",
+    taxRate: "",
   });
 
   const [result, setResult] = useState({
-    taxes: 2130.45,
-    baseLoanAmount: 30536.45,
-    interest: 1740.58,
-    totalLoanAmount: 30277.03,
-    monthlyPayment: 841.03,
-    outOfPocket: 2000,
-    quoteName: "2025 Ford Escape",
+    taxes: 0,
+    baseLoanAmount: 0,
+    interest: 0,
+    totalLoanAmount: 0,
+    monthlyPayment: 0,
+    outOfPocket: 0,
+    quoteName: "",
   });
   const [savedQuotes, setSavedQuotes] = useState<any[]>([]);
 
@@ -42,18 +52,26 @@ const QuoteForm: React.FC = () => {
     const { cost, profit, sellingPrice, term, rate, outOfPocket, taxRate } =
       form;
 
-    const sp = sellingPrice || cost + profit;
-    const taxes = (sp * taxRate) / 100;
-    const baseLoanAmount = sp + taxes;
-    const monthlyRate = rate / 100 / 12;
+    // ✅ convert to floats
+    const c = parseFloat(String(cost));
+    const p = parseFloat(String(profit));
+    const sp = sellingPrice ? parseFloat(String(sellingPrice)) : c + p;
+    const t = parseFloat(String(term));
+    const r = parseFloat(String(rate));
+    const oop = parseFloat(String(outOfPocket));
+    const tr = parseFloat(String(taxRate));
+
+    // ✅ correct formulas
+    const taxes = (sp * tr) / 100;
+    const baseLoanAmount = sp + taxes - oop;
+    const monthlyRate = r / 100 / 12;
 
     const payment =
-      term > 0 && monthlyRate > 0
-        ? (baseLoanAmount * monthlyRate) /
-          (1 - Math.pow(1 + monthlyRate, -term))
-        : 0;
+      t > 0 && monthlyRate > 0
+        ? (baseLoanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -t))
+        : baseLoanAmount / t;
 
-    const totalLoanAmount = payment * term;
+    const totalLoanAmount = payment * t;
     const interest = totalLoanAmount - baseLoanAmount;
 
     setResult({
@@ -62,30 +80,47 @@ const QuoteForm: React.FC = () => {
       interest,
       totalLoanAmount,
       monthlyPayment: payment,
-      outOfPocket,
+      outOfPocket: oop,
       quoteName: "2025 Ford Escape",
     });
   };
 
+  const handleQuoteNameChange = (name: string) => {
+    if (result) {
+      setResult({ ...result, quoteName: name });
+    }
+  };
+
   const handleSave = async () => {
     if (!result) return;
+
     const newQuote = {
       name: result.quoteName || "Unnamed Quote",
+      cost: parseFloat(form.cost),
+      profit: parseFloat(form.profit),
+      sellingPrice: parseFloat(form.sellingPrice),
+      term: parseInt(form.term),
+      rate: parseFloat(form.rate),
+      taxRate: parseFloat(form.taxRate),
+      outOfPocket: parseFloat(form.outOfPocket),
+      taxes: result.taxes,
+      baseLoanAmount: result.baseLoanAmount,
+      interest: result.interest,
+      totalLoanAmount: result.totalLoanAmount,
       payment: result.monthlyPayment,
-      outOfPocket: result.outOfPocket,
     };
-    const saved = await saveQuote(newQuote); // ✅ POST /api/quotes
-    setSavedQuotes((prev) => [...prev, saved]); // update UI
+
+    try {
+      const saved = await saveQuote(newQuote); // ✅ POST /api/quotes with full data
+      setSavedQuotes((prev) => [...prev, saved]); // update UI
+    } catch (error) {
+      console.error("❌ Error saving quote:", error);
+    }
   };
   const handleDelete = async (id: string) => {
     console.log("this is the id", id);
     await deleteQuote(id); // call backend
     setSavedQuotes((prev) => prev.filter((q) => q._id !== id)); // update UI
-  };
-
-  const handleView = (id: string) => {
-    alert("Viewing quote: " + id);
-    // later: load quote back into form
   };
 
   return (
@@ -100,15 +135,15 @@ const QuoteForm: React.FC = () => {
           handleChange={handleChange}
           onApply={handleApply}
         />
-        <FinanceResult result={result} onSave={handleSave} />
+        <FinanceResult
+          result={result}
+          onSave={handleSave}
+          handleQuoteNameChange={handleQuoteNameChange}
+        />
       </div>
 
       {/* Saved Quotes Section */}
-      <SavedQuotes
-        quotes={savedQuotes}
-        onDelete={handleDelete}
-        onView={handleView}
-      />
+      <SavedQuotes quotes={savedQuotes} onDelete={handleDelete} />
     </div>
   );
 };

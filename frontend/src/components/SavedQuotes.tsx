@@ -1,24 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface Quote {
   _id: string;
   name: string;
-  payment: number;
+  cost: number;
+  profit: number;
+  sellingPrice: number;
+  term: number;
+  rate: number;
+  taxRate: number;
   outOfPocket: number;
+  taxes: number;
+  baseLoanAmount: number;
+  interest: number;
+  totalLoanAmount: number;
+  payment: number;
+  createdAt: string;
 }
 
 interface SavedQuotesProps {
   quotes: Quote[];
-  onDelete: (id: string) => void; // ✅ string
-  onView: (id: string) => void; // ✅ string
+  onDelete: (id: string) => void;
 }
 
-const SavedQuotes: React.FC<SavedQuotesProps> = ({
-  quotes,
-  onDelete,
-  onView,
-}) => {
-  console.log("These are quotes", quotes);
+const SavedQuotes: React.FC<SavedQuotesProps> = ({ quotes, onDelete }) => {
+  const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
+
   return (
     <div className="w-full bg-white border rounded-md shadow-sm mt-8">
       <div className="px-4 py-2 bg-gray-50 border-b rounded-t-md">
@@ -34,16 +41,14 @@ const SavedQuotes: React.FC<SavedQuotesProps> = ({
               <div>
                 <h3 className="font-semibold text-gray-800">{q.name}</h3>
                 <p className="text-sm text-gray-600">
-                  Payment:{" "}
-                  <span className="font-bold">${q.payment.toFixed(2)}</span>{" "}
-                  &nbsp; Out of Pocket:{" "}
-                  <span className="font-bold">${q.outOfPocket.toFixed(2)}</span>
+                  Payment: ${q.payment?.toFixed(2) ?? "0.00"} &nbsp; Out of
+                  Pocket: ${q.outOfPocket?.toFixed(2) ?? "0.00"}
                 </p>
               </div>
 
               <div className="flex gap-2">
                 <button
-                  onClick={() => onView(q._id)}
+                  onClick={() => setSelectedQuote(q)}
                   className="bg-black text-white px-4 py-1.5 rounded-md text-sm hover:bg-gray-800"
                 >
                   View
@@ -59,6 +64,71 @@ const SavedQuotes: React.FC<SavedQuotesProps> = ({
           ))
         )}
       </div>
+
+      {/* Modal */}
+      {selectedQuote && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white w-full max-w-lg rounded-lg shadow-lg p-6 relative">
+            <button
+              onClick={() => setSelectedQuote(null)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              ✕
+            </button>
+
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">
+              {selectedQuote.name}
+            </h3>
+
+            <div className="space-y-2 text-sm text-gray-700">
+              <p>
+                <strong>Cost:</strong> ${selectedQuote.cost.toFixed(2)}
+              </p>
+              <p>
+                <strong>Profit:</strong> ${selectedQuote.profit.toFixed(2)}
+              </p>
+              <p>
+                <strong>Selling Price:</strong> $
+                {selectedQuote.sellingPrice.toFixed(2)}
+              </p>
+              <p>
+                <strong>Term:</strong> {selectedQuote.term} months
+              </p>
+              <p>
+                <strong>Rate:</strong> {selectedQuote.rate}%
+              </p>
+              <p>
+                <strong>Tax Rate:</strong> {selectedQuote.taxRate}%
+              </p>
+              <p>
+                <strong>Out Of Pocket:</strong> $
+                {selectedQuote.outOfPocket.toFixed(2)}
+              </p>
+              <p>
+                <strong>Taxes:</strong> ${selectedQuote.taxes.toFixed(2)}
+              </p>
+              <p>
+                <strong>Base Loan Amount:</strong> $
+                {selectedQuote.baseLoanAmount.toFixed(2)}
+              </p>
+              <p>
+                <strong>Interest:</strong> ${selectedQuote.interest.toFixed(2)}
+              </p>
+              <p>
+                <strong>Total Loan Amount:</strong> $
+                {selectedQuote.totalLoanAmount.toFixed(2)}
+              </p>
+              <p>
+                <strong>Monthly Payment:</strong> $
+                {selectedQuote.payment.toFixed(2)}
+              </p>
+              <p className="text-xs text-gray-500">
+                Created At: {new Date(selectedQuote.createdAt).toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

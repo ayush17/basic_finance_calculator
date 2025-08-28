@@ -10,11 +10,21 @@ export const getQuotes = async () => {
   return res.data;
 };
 
-// Save new quote
+// Save new quote (✅ full finance data)
 export const saveQuote = async (quote: {
   name: string;
-  payment: number;
+  cost: number;
+  profit: number;
+  sellingPrice: number;
+  term: number;
+  rate: number;
+  taxRate: number;
   outOfPocket: number;
+  taxes: number;
+  baseLoanAmount: number;
+  interest: number;
+  totalLoanAmount: number;
+  payment: number;
 }) => {
   const res = await API.post("/", quote);
   return res.data;
