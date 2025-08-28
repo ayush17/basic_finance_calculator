@@ -16,7 +16,7 @@ interface FinanceQuoteProps {
 const fields: Field[] = [
   { label: "Cost:", name: "cost", prefix: "$" },
   { label: "Profit:", name: "profit", prefix: "$" },
-  { label: "Selling Price:", name: "sellingPrice", prefix: "$" },
+  { label: "Selling Price:", name: "sellingPrice", suffix: "$" },
   { label: "Term:", name: "term", suffix: "Months" },
   { label: "Rate:", name: "rate", suffix: "%" },
   { label: "Out Of Pocket:", name: "outOfPocket", prefix: "$" },
@@ -53,9 +53,14 @@ const FinanceQuote: React.FC<FinanceQuoteProps> = ({
                 type="number"
                 name={field.name}
                 value={form[field.name]}
+                readOnly={field.name === "sellingPrice"}
                 onChange={handleChange}
                 className={`w-full border rounded-md py-1.5 pr-14 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none ${
                   field.prefix ? "pl-6" : "pl-2"
+                }${
+                  field.name === "sellingPrice"
+                    ? "bg-gray-100 cursor-not-allowed"
+                    : ""
                 }`}
               />
               {field.suffix && (

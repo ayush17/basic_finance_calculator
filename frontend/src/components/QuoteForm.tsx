@@ -44,7 +44,20 @@ const QuoteForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const numericValue = parseFloat(value) || 0;
+
+    setForm((prev) => {
+      const updated = { ...prev, [name]: numericValue };
+
+      // Auto-calc Selling Price = Cost + Profit
+      if (name === "cost" || name === "profit") {
+        updated.sellingPrice = (
+          (parseFloat(updated.cost) || 0) + (parseFloat(updated.profit) || 0)
+        ).toString();
+      }
+
+      return updated;
+    });
   };
   //Calculation Logic
   const handleApply = (e: React.FormEvent) => {
