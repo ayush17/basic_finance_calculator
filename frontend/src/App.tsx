@@ -3,7 +3,7 @@ import QuoteForm from "./components/QuoteForm";
 
 function App() {
   return (
-    <div className="max-w-6xl mx-auto py-10 space-y-8">
+    <div className="max-w-6xl mx-auto py-10 px-4 sm:px-6 space-y-8">
       <QuoteForm />
     </div>
   );
